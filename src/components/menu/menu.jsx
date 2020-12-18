@@ -2,32 +2,42 @@
 //list of sub orders
 //submit button
 import React, { Component } from "react";
-import MyMenu from "../mymenu/mymenu";
+import AddButton from "../common/addbutton";
 import { getOrdersType } from "../services/fakeOrders";
 import { getOrders } from "../services/fakeSubOrders";
+import OrderTaken from "../common/ordertaken";
 
 class Menu extends Component {
-  state = { ordersType: getOrdersType(), orders: getOrders() };
+  /* state = { ordersType: getOrdersType(), orders: getOrders() };
   handlePageChange = (order) => {
     this.setState({ selectedItem: order });
   };
   handleAdd = (item) => {
-    const data = item === undefined ? " " : item;
-    return data;
+    const data = item === undefined ? "no Orders yet " : item;
+    // return this.setState({ subOrders: data });
+    console.log(data);
+    // return data;
   };
-
+*/
   render() {
-    const { ordersType, orders, selectedItem } = this.state;
-    const selectedOrder = selectedItem
+    const {
+      ordersType,
+      orders,
+      selectedOrder,
+      onAdd,
+      onPageChange,
+    } = this.props;
+    /* const selectedOrder = selectedItem
       ? orders.filter((order) => order.ordersType._id === selectedItem._id)
-      : orders;
+      : orders;*/
+    //console.log("in the render method " + this.handleAdd());
     return (
       <>
         <table className="table">
           <thead>
             <tr>
               {ordersType.map((item) => (
-                <th key={item._id} onClick={() => this.handlePageChange(item)}>
+                <th key={item._id} onClick={() => onPageChange(item)}>
                   {item.name}
                 </th>
               ))}
@@ -48,17 +58,13 @@ class Menu extends Component {
                 <td>{order.name}</td>
                 <td>{order.price}</td>
                 <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.handleAdd(order)}
-                  >
-                    ADD
-                  </button>
+                  <AddButton onAdd={onAdd} order={order} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        <OrderTaken selectedOrder={onAdd} />
       </>
     );
   }
